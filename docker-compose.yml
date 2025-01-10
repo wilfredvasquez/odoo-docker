@@ -1,0 +1,35 @@
+version: '3'
+services:
+  odoo:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: odoo_dev_v17
+    env_file: .env
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8069"
+    volumes:
+      - data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./extra-addons:/mnt/extra-addons
+    command: odoo --dev=all
+    environment:
+      WDB_SOCKET_SERVER: wdb
+      WDB_NO_BROWSER_AUTO_OPEN: True
+
+  wdb:
+    image: kozea/wdb
+    ports:
+      - "1984:1984"
+
+  postgres:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - db:/var/lib/postgresql/data/pgdata
+
+volumes:
+  data:
+  db:
