@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   odoo:
     build:
@@ -14,15 +14,8 @@ services:
       - data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./extra-addons:/mnt/extra-addons
-    command: odoo --dev=all
-    environment:
-      WDB_SOCKET_SERVER: wdb
-      WDB_NO_BROWSER_AUTO_OPEN: True
-
-  wdb:
-    image: kozea/wdb
-    ports:
-      - "1984:1984"
+    stdin_open: true
+    tty: true
 
   postgres:
     image: postgres:13
